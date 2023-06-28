@@ -1,0 +1,56 @@
+const sinon = require('sinon');
+const { expect } = require('chai');
+const { mockProducts } = require('../mocks/products');
+
+const productsControllers = require('../../../src/controllers/products.controllers');
+const productsServices = require('../../../src/services/products.services');
+
+describe('Teste o productControllers', function () {
+  beforeEach(function () {
+    sinon.restore();
+  });
+
+  it('Teste se o getAll retorna um array com os produtos', async function () {
+    sinon.stub(productsServices, 'getAll').resolves(mockProducts);
+
+    const req = {};
+    const res = {};
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns(res);
+
+    await productsControllers.getAll(req, res);
+    expect(res.status.calledWith(200)).to.be.equal(true);
+    expect(res.json.calledWith(mockProducts)).to.be.equal(true);
+  });
+
+  it('Teste se o getId não encontra nada', async function () {
+    sinon.stub(productsServices, 'getId').resolves({ message: 'Product not found' });
+
+    const req = {};
+    const res = {};
+
+    req.params = { id: 9 };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns(res);
+
+    await productsControllers.getId(req, res);
+    expect(res.status.calledWith(404)).to.be.equal(true);
+    expect(res.json.calledWith({ message: 'Product not found' })).to.be.equal(true);
+  });
+
+  it('Teste se o getId retorna um array com o produto do id', async function () {
+    sinon.stub(productsServices, 'getId').resolves(mockProducts[0]);
+
+    const req = {};
+    const res = {};
+
+    req.params = { id: 1 };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns(res);
+
+    await productsControllers.getId(req, res);
+    expect(res.status.calledWith(200)).to.be.equal(true);
+    expect(res.json.calledWith(mockProducts[0])).to.be.equal(true);
+  });
+});
