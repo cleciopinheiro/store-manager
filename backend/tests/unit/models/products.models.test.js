@@ -20,7 +20,7 @@ describe('Teste o productModels', function () {
     expect(response[0]).to.have.all.keys('id', 'name');
   });
 
-  it('Tste se o getId não encontra nada com o id passado', async function () {
+  it('Teste se o getId não encontra nada com o id passado', async function () {
     sinon.stub(connection, 'query').resolves([]);
 
     const response = await productModels.getId(1);
@@ -28,7 +28,7 @@ describe('Teste o productModels', function () {
     expect(response).to.be.an('object');
   });
 
-  it('Teste se o getId retorna um array com o produto do id', async function () {
+  it('Teste se o getId retorna um objeto', async function () {
     sinon.stub(connection, 'query').resolves(mockProducts);
 
     const response = await productModels.getId(1);
