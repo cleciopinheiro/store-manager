@@ -1,4 +1,9 @@
+const chai = require('chai');
+const sinonChai = require('sinon-chai');
 const sinon = require('sinon');
+
+chai.use(sinonChai);
+
 const { expect } = require('chai');
 const { mockSales } = require('../mocks/products');
 
@@ -6,11 +11,7 @@ const salesControllers = require('../../../src/controllers/sales.controllers');
 const salesServices = require('../../../src/services/sales.services');
 
 describe('Teste o serviceControllers', function () {
-  beforeEach(function () {
-    sinon.restore();
-  });
-
-  it('Teste se o getAll retorna um array com os serviços', async function () {
+it('Teste se o getAll retorna um array com os serviços', async function () {
     sinon.stub(salesServices, 'getAll').resolves(mockSales);
 
     const req = {};
@@ -55,5 +56,9 @@ describe('Teste o serviceControllers', function () {
 
     expect(res.status.calledWith(200)).to.be.equal(true);
     expect(res.json.calledWith(mockSales[0])).to.be.equal(true);
+  });
+
+  afterEach(function () {
+    sinon.restore();
   });
 });
