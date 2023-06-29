@@ -18,8 +18,19 @@ const create = async (name) => {
   return product;
 };
 
+const update = async (id, name) => {
+  const productId = await productModels.getId(id);
+  if (!productId) {
+    return { message: 'Product not found' };
+  }
+
+  const product = await productModels.update(id, name);
+  return product;
+};
+
 module.exports = {
   getAll,
   getId,
   create,
+  update,
 };
