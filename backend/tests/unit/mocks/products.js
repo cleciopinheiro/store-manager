@@ -34,7 +34,13 @@ const mockSales = [
   },
 ];
 
+const mockNewProduct = {
+  id: 50,
+  name: 'Produto X',
+};
+
 module.exports = {
   mockProducts,
   mockSales,
+  mockNewProduct,
 };

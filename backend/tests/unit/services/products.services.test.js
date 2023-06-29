@@ -5,7 +5,7 @@ const sinon = require('sinon');
 chai.use(sinonChai);
 
 const { expect } = require('chai');
-const { mockProducts } = require('../mocks/products');
+const { mockProducts, mockNewProduct } = require('../mocks/products');
 
 const productsServices = require('../../../src/services/products.services');
 const productsModels = require('../../../src/models/product.models');
@@ -36,6 +36,14 @@ describe('Teste o productServices', function () {
     
     expect(products).to.be.an('object');
     expect(products).to.have.all.keys('id', 'name');
+  });
+
+  it('Teste se o create retorna um objeto', async function () {
+    sinon.stub(productsModels, 'create').resolves(mockNewProduct);
+    
+    const products = await productsServices.create(mockNewProduct);
+    
+    expect(products).to.be.an('object');
   });
   
   afterEach(function () {
