@@ -5,7 +5,7 @@ const sinon = require('sinon');
 chai.use(sinonChai);
 
 const { expect } = require('chai');
-const { mockSales } = require('../mocks/products');
+const { mockSales, mockNewSale } = require('../mocks/products');
 
 const salesControllers = require('../../../src/controllers/sales.controllers');
 const salesServices = require('../../../src/services/sales.services');
@@ -56,6 +56,22 @@ it('Teste se o getAll retorna um array com os serviços', async function () {
 
     expect(res.status.calledWith(200)).to.be.equal(true);
     expect(res.json.calledWith(mockSales[0])).to.be.equal(true);
+  });
+
+  it('Teste se o create retorna um objeto', async function () {
+    sinon.stub(salesServices, 'create').resolves(mockNewSale);
+
+    const req = {};
+    const res = {};
+
+    req.body = mockNewSale;
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns(res);
+
+    await salesControllers.create(req, res);
+
+    expect(res.status.calledWith(201)).to.be.equal(true);
+    expect(res.json.calledWith(mockNewSale)).to.be.equal(true);
   });
 
   afterEach(function () {

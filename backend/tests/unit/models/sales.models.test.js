@@ -27,6 +27,18 @@ describe('Teste o salesModels', function () {
     
     expect(response[0]).to.be.an('object');
   });
+
+  it('Teste se o create retorna um objeto', async function () {
+    const stubExecute = sinon.stub(connection, 'execute').resolves();
+
+    const response = await salesModels.create(1, 2, 10);
+
+    expect(stubExecute).to.be.calledOnceWithExactly(
+      'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
+      [1, 2, 10],
+    );
+    expect(response).to.be.equal(undefined);
+  });
   
   afterEach(function () {
     sinon.restore();

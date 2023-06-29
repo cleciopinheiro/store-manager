@@ -1,4 +1,5 @@
 const salesModels = require('../models/sales.models');
+const createSale = require('../utils/createSale');
 
 const getAll = async () => {
   const salesList = await salesModels.getAll();
@@ -13,7 +14,17 @@ const getId = async (id) => {
   return sale;
 };
 
+const create = async (itemsSold) => {
+  const insertId = await createSale();
+  itemsSold.map(async (product) => {
+    const { productId, quantity } = product;
+    await salesModels.create(insertId, productId, quantity);  
+  });
+  return { id: insertId, itemsSold };
+};
+
 module.exports = {
   getAll,
   getId,
+  create,
 };

@@ -23,7 +23,13 @@ const getId = async (id) => {
   return sales;
 };
 
+const create = async (id, productId, quantity) => {
+  const query = 'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)';
+  await connection.execute(query, [id, productId, quantity]);
+};
+
 module.exports = {
   getAll,
   getId,
+  create,
 };

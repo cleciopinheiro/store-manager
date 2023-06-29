@@ -37,6 +37,18 @@ describe('Teste o salesServices', function () {
     expect(products).to.be.an('object');
     expect(products).to.have.all.keys('saleId', 'date', 'productId', 'quantity');
   });
+
+  it('Teste se o create retorna um objeto', async function () {
+    sinon.stub(salesModels, 'create').resolves();
+    
+    const response = await salesServices.create([
+      { productId: 1, quantity: 10 },
+      { productId: 2, quantity: 20 },
+    ]);
+    
+    expect(response).to.be.an('object');
+    expect(response).to.have.all.keys('id', 'itemsSold');
+  });
   
   afterEach(function () {
     sinon.restore();
