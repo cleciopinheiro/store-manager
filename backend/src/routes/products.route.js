@@ -8,5 +8,6 @@ app.get('/products', productsController.getAll);
 app.get('/products/:id', productsController.getId);
 app.post('/products', validateName, productsController.create);
 app.put('/products/:id', validateName, productsController.update);
+app.delete('/products/:id', productsController.exclude);
 
 module.exports = app;

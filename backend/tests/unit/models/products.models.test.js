@@ -24,7 +24,7 @@ describe('Teste o productModels', function () {
   it('Teste se o getId retorna um objeto', async function () {
     sinon.stub(connection, 'query').resolves(mockProducts);
 
-    const response = await productModels.getId(1);
+    const response = await productModels.getId(2);
     
     expect(response).to.be.an('object');
     expect(response).to.have.all.keys('id', 'name');
@@ -37,6 +37,14 @@ describe('Teste o productModels', function () {
     
     expect(response).to.be.an('object');
     expect(response).to.have.all.keys('id', 'name');
+  });
+
+  it('Teste se o exclude deleta um objeto', async function () {
+    sinon.stub(connection, 'query').resolves(mockProducts);
+
+    const response = await productModels.exclude(1);
+
+    expect(response).to.be.deep.equal(undefined);
   });
   
   afterEach(function () {
