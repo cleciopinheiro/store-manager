@@ -1,19 +1,19 @@
 const productModels = require('../models/product.models');
 
 const validateQuantity = (req, res, next) => {
-  const quantity = req.body.map((item) => item.quantity);
-  const validate = quantity.some((item) => item === undefined);
-  const isInvalid = quantity.some((item) => item <= 0);
+  const quantities = req.body.map((item) => item.quantity);
 
-  if (validate) {
-    return res.status(400).json({ message: '"quantity" is required' });
+  const isMissing = quantities.some((item) => item === undefined);
+  const isInvalid = quantities.some((item) => item <= 0);
+
+  switch (true) {
+    case isMissing:
+      return res.status(400).json({ message: '"quantity" is required' });
+    case isInvalid:
+      return res.status(422).json({ message: '"quantity" must be greater than or equal to 1' });
+    default:
+      return next();
   }
-
-  if (isInvalid) {
-    return res.status(422).json({ message: '"quantity" must be greater than or equal to 1' });
-  }
-
-  next();
 };
 
 const validateProductId = async (req, res, next) => {
@@ -21,21 +21,19 @@ const validateProductId = async (req, res, next) => {
   const productIds = productList.map((item) => item.id);
 
   const bodyIds = req.body;
-  console.log(bodyIds);
   const saleIds = bodyIds.map((item) => item.productId);
 
   const validateId = saleIds.every((item) => productIds.includes(item));
-
   const validate = saleIds.some((item) => item === undefined);
 
-  if (validate) {
-    return res.status(400).json({ message: '"productId" is required' });
+  switch (true) {
+    case validate:
+      return res.status(400).json({ message: '"productId" is required' });
+    case !validateId:
+      return res.status(404).json({ message: 'Product not found' });
+    default:
+      return next();
   }
-
-  if (!validateId) {
-    return res.status(404).json({ message: 'Product not found' });
-  }
-  next();
 };
 
 module.exports = {
