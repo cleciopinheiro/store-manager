@@ -49,6 +49,24 @@ describe('Teste o salesServices', function () {
     expect(response).to.be.an('object');
     expect(response).to.have.all.keys('id', 'itemsSold');
   });
+
+  it('Teste se o exclude retorna um objeto', async function () {
+    sinon.stub(salesModels, 'getId').resolves(mockSales[0]);
+    sinon.stub(salesModels, 'exclude').resolves(mockSales[0]);
+
+    const response = await salesServices.exclude(1);
+    
+    expect(response).to.be.an('object');
+  });
+
+  it('Teste se o exclude retorna a mensagem de erro', async function () {
+    sinon.stub(salesModels, 'exclude').resolves([]);
+    
+    const response = await salesServices.exclude(9);
+    
+    expect(response).to.be.an('object');
+    expect(response).to.have.all.keys('message');
+  });
   
   afterEach(function () {
     sinon.restore();

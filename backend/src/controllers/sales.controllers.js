@@ -20,8 +20,29 @@ const create = async (req, res) => {
   return res.status(201).json(sale);
 };
 
+const update = async (req, res) => {
+  const { saleId, productId } = req.params;
+  const { quantity } = req.body;
+  const sale = await salesServices.update(Number(saleId), Number(productId), Number(quantity));
+  if (sale.message) {
+    return res.status(404).json(sale);
+  }
+  return res.status(200).json(sale);
+};
+
+const exclude = async (req, res) => {
+  const { id } = req.params;
+  const sale = await salesServices.exclude(Number(id));
+  if (sale.message) {
+    return res.status(404).json(sale);
+  }
+  return res.status(204).json(sale);
+};
+
 module.exports = {
   getAll,
   getId,
   create,
+  update,
+  exclude,
 };

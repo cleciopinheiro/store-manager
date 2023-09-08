@@ -10,6 +10,8 @@ const { mockSales, mockNewSale } = require('../mocks/products');
 const salesControllers = require('../../../src/controllers/sales.controllers');
 const salesServices = require('../../../src/services/sales.services');
 
+const MESSAGE_ERROR = { message: 'Sale not found' };
+
 describe('Teste o serviceControllers', function () {
 it('Teste se o getAll retorna um array com os serviços', async function () {
     sinon.stub(salesServices, 'getAll').resolves(mockSales);
@@ -27,7 +29,7 @@ it('Teste se o getAll retorna um array com os serviços', async function () {
   });
 
   it('Teste se o getId não encontra nada', async function () {
-    sinon.stub(salesServices, 'getId').resolves({ message: 'Sale not found' });
+    sinon.stub(salesServices, 'getId').resolves(MESSAGE_ERROR);
 
     const req = {};
     const res = {};
@@ -39,7 +41,7 @@ it('Teste se o getAll retorna um array com os serviços', async function () {
     await salesControllers.getId(req, res);
 
     expect(res.status.calledWith(404)).to.be.equal(true);
-    expect(res.json.calledWith({ message: 'Sale not found' })).to.be.equal(true);
+    expect(res.json.calledWith(MESSAGE_ERROR)).to.be.equal(true);
   });
 
   it('Teste se o getId retorna um array com o serviço do id', async function () {
@@ -72,6 +74,38 @@ it('Teste se o getAll retorna um array com os serviços', async function () {
 
     expect(res.status.calledWith(201)).to.be.equal(true);
     expect(res.json.calledWith(mockNewSale)).to.be.equal(true);
+  });
+
+  it('Teste se o exclude retorna um objeto', async function () {
+    sinon.stub(salesServices, 'exclude').resolves(mockSales[0]);
+
+    const req = {};
+    const res = {};
+
+    req.params = { id: 1 };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns(res);
+
+    await salesControllers.exclude(req, res);
+
+    expect(res.status.calledWith(204)).to.be.equal(true);
+    expect(res.json.calledWith(mockSales[0])).to.be.equal(true);
+  });
+
+  it('Teste se o exclude não encontra nada', async function () {
+    sinon.stub(salesServices, 'exclude').resolves(MESSAGE_ERROR);
+
+    const req = {};
+    const res = {};
+
+    req.params = { id: 9 };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns(res);
+
+    await salesControllers.exclude(req, res);
+
+    expect(res.status.calledWith(404)).to.be.equal(true);
+    expect(res.json.calledWith(MESSAGE_ERROR)).to.be.equal(true);
   });
 
   afterEach(function () {

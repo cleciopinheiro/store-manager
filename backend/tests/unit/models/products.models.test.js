@@ -39,6 +39,15 @@ describe('Teste o productModels', function () {
     expect(response).to.have.all.keys('id', 'name');
   });
 
+  it('Teste se o update retorna um objeto', async function () {
+    sinon.stub(connection, 'query').resolves(mockNewProduct);
+
+    const response = await productModels.update(1, 'Produto X');
+    
+    expect(response).to.be.an('object');
+    expect(response).to.have.all.keys('id', 'name');
+  });
+
   it('Teste se o exclude deleta um objeto', async function () {
     sinon.stub(connection, 'query').resolves(mockProducts);
 

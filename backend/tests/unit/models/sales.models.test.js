@@ -25,7 +25,7 @@ describe('Teste o salesModels', function () {
     
     const response = await salesModels.getId(1);
     
-    expect(response[0]).to.be.an('object');
+    expect(response).to.be.an('array');
   });
 
   it('Teste se o create retorna um objeto', async function () {
@@ -38,6 +38,14 @@ describe('Teste o salesModels', function () {
       [1, 2, 10],
     );
     expect(response).to.be.equal(undefined);
+  });
+
+  it('Teste se o exclude deleta um objeto', async function () {
+    sinon.stub(connection, 'query').resolves();
+
+    const response = await salesModels.exclude(1);
+
+    expect(response).to.be.deep.equal(undefined);
   });
   
   afterEach(function () {

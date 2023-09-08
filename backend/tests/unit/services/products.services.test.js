@@ -46,6 +46,25 @@ describe('Teste o productServices', function () {
     expect(products).to.be.an('object');
   });
 
+  it('Teste se o update retorna um objeto', async function () {
+    sinon.stub(productsModels, 'getId').resolves(mockProducts[0]);
+    sinon.stub(productsModels, 'update').resolves(mockNewProduct);
+
+    const products = await productsServices.update(1, mockNewProduct);
+
+    expect(products).to.be.an('object');
+  });
+
+  it('Teste se o update retorna uma mensagem de erro para um produto inexistente', async function () {
+    sinon.stub(productsModels, 'getId').resolves();
+    sinon.stub(productsModels, 'update').resolves(mockNewProduct);
+
+    const products = await productsServices.update(45, mockNewProduct);
+
+    expect(products).to.be.an('object');
+    expect(products).to.deep.equal({ message: 'Product not found' });
+  });
+
   it('Teste se o exclude retorna o produto excluído', async function () {
     sinon.stub(productsModels, 'getId').resolves(mockProducts[0]);
     sinon.stub(productsModels, 'exclude').resolves();
