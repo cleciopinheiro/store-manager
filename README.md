@@ -120,4 +120,4 @@ Navigate to the project root.
     
 ---
  
-Developed by [Clécio Pinheiro](https://www.linkedin.com/in/cleciopinheirodev), © 2022.
+Developed by [Clécio Pinheiro](https://www.linkedin.com/in/cleciopinheirodev), © 2023.
